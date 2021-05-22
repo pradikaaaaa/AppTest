@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptest.R
+import com.example.apptest.helper.DatabaseHelper
 import com.example.apptest.models.ModelRecipe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_item_recipe.view.*
@@ -20,10 +22,23 @@ class RecipeAdapter(private var recipes : MutableList<ModelRecipe>, private var 
 
     class ViewHolder(itemView : View) :RecyclerView.ViewHolder(itemView) {
         fun bind(recipe : ModelRecipe, context: Context){
+            var dbHelper = DatabaseHelper(context)
+
             itemView.txt_nama_resep.text = recipe.title
             Picasso.get()
                 .load(recipe.thumb)
                 .into(itemView.imgRecipe)
+
+            itemView.addToFavorit.setOnClickListener {
+                try{
+                    dbHelper.insertData(recipe.title.toString(),recipe.thumb.toString(),recipe.key.toString())
+                    Toast.makeText(context,"Berhasil menambahkan ke favorit",Toast.LENGTH_SHORT).show()
+                }catch (e:Exception){
+                    e.printStackTrace()
+                    Toast.makeText(context,e.message.toString(),Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
     }
 
