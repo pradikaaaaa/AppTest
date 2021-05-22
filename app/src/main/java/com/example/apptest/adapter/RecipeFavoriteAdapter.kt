@@ -37,7 +37,7 @@ class RecipeFavoriteAdapter : RecyclerView.Adapter<RecipeFavoriteAdapter.ViewHol
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         fun bind(favorit: ModelFavorit, context: Context){
             var dbHelper = DatabaseHelper(context)
-
+            var thisParent = FavoritFragment.mContext
 
             itemView.txt_nama_resep.text = favorit.judul
             Picasso.get()
@@ -48,6 +48,7 @@ class RecipeFavoriteAdapter : RecyclerView.Adapter<RecipeFavoriteAdapter.ViewHol
                 try{
                     dbHelper.deleteData(favorit.id.toString())
                     Toast.makeText(context,"Berhasil menghapus dari favorit", Toast.LENGTH_SHORT).show()
+                    thisParent.onResume()
                 }catch (e : Exception){
                     e.printStackTrace()
                     Toast.makeText(context,e.message.toString(),Toast.LENGTH_SHORT).show()
@@ -60,5 +61,6 @@ class RecipeFavoriteAdapter : RecyclerView.Adapter<RecipeFavoriteAdapter.ViewHol
     fun setFavorit(favoritList : List<ModelFavorit>, context: Context){
         items = favoritList
         this.context = context
+        notifyDataSetChanged()
     }
 }

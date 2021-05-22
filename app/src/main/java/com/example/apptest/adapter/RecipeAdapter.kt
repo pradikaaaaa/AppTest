@@ -30,12 +30,18 @@ class RecipeAdapter(private var recipes : MutableList<ModelRecipe>, private var 
                 .into(itemView.imgRecipe)
 
             itemView.addToFavorit.setOnClickListener {
-                try{
-                    dbHelper.insertData(recipe.title.toString(),recipe.thumb.toString(),recipe.key.toString())
-                    Toast.makeText(context,"Berhasil menambahkan ke favorit",Toast.LENGTH_SHORT).show()
-                }catch (e:Exception){
-                    e.printStackTrace()
-                    Toast.makeText(context,e.message.toString(),Toast.LENGTH_SHORT).show()
+                val res = dbHelper.cekData(recipe.key.toString())
+
+                if(res.count == 0 ) {
+                    try {
+                        dbHelper.insertData(recipe.title.toString(), recipe.thumb.toString(), recipe.key.toString())
+                        Toast.makeText(context, "Berhasil menambahkan ke favorit", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }else{
+                    Toast.makeText(context,"Sudah dalam favorit", Toast.LENGTH_SHORT).show()
                 }
             }
 

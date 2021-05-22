@@ -32,10 +32,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.delete(TABLE_NAME,"id = ?", arrayOf(id))
     }
 
-    val allData : Cursor
-    get() {
+   fun allData() : Cursor {
         val db = this.writableDatabase
         val res = db.rawQuery("SELECT * FROM "+ TABLE_NAME, null)
+        return res
+    }
+
+    fun cekData(slug : String) : Cursor{
+        val db = this.writableDatabase
+        val res = db.rawQuery("SELECT * FROM "+ TABLE_NAME+" WHERE "+COL_4+" = '"+ slug+"'", null)
         return res
     }
 
